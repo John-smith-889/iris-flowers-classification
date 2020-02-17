@@ -102,3 +102,48 @@ iris_dataset.loc[25,['Sepal.Length']]
 # 5.85034
 iris_dataset.loc[82,['Sepal.Width']]
 # 3.06174
+
+
+#================#
+# Data modelling #
+#================#
+
+# Change type of Species column to categorical (actually not needed) 
+#iris_dataset.Species = pd.Categorical(iris_dataset.Species)
+#iris_dataset['target'] = iris_dataset.Species.cat.codes
+
+#============
+# Test design
+
+
+from sklearn.model_selection import train_test_split
+# split data set into train and test sets
+data_train, data_test, target_train, target_test = \
+train_test_split(iris_dataset.iloc[:,[0,1,2,3]].values, \
+                 iris_dataset['Species'].values, test_size = 0.30, \
+                 random_state = 10)
+
+
+
+#============================
+# data modelling with XGBoost
+
+"""
+XGBoost is reliable ML algorithm having SOTA performance on 
+small to medium datasets 
+
+Chen, T. (2016). Story and Lessons Behind The Evolution of Xgboost. Retrieved February 5,
+2020, from https://homes.cs.washington.edu/ tqchen/2016/03/10/story-and-lessons-behindthe-
+evolution-of-xgboost.html
+Chen, T., Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System.
+"""
+
+from xgboost import XGBClassifier
+# Create and fit XGBoost model
+model_01 = XGBClassifier()
+model_01.fit(data_train, target_train)
+
+
+# Predict values on test set
+Y_pred_01 = model_01.predict(data_test)
+
