@@ -143,7 +143,31 @@ from xgboost import XGBClassifier
 model_01 = XGBClassifier()
 model_01.fit(data_train, target_train)
 
-
 # Predict values on test set
 Y_pred_01 = model_01.predict(data_test)
 
+
+#=================#
+# Model assesment #
+#=================#
+
+from sklearn.metrics import confusion_matrix
+
+# Distinguish unique values of target_test variable
+unique, counts = np.unique(target_test, return_counts=True)
+for i in range(0,len(unique)):
+    print(unique[i], ": ", counts[i])
+# 'setosa', 'versicolor', 'virginica', and this is order of future conf matrix
+
+# Create confusion matrix
+confusion_matrix(target_test, Y_pred_01)
+"""
+As we may see in the matrix:
+    1) row 1 - all observations of setosa was classified as setosa
+    2) row 2 - all observations of versicolor was classified as versicolor
+    3) row 3 - all observations of virginica was classified as virginica
+    
+    All categories were classified properly. It means our XGBoost 
+    classification accuracy is 100%, it's the best possible result.
+    
+"""
